@@ -1,4 +1,6 @@
 ﻿
+using RoutinePanel.Pages;
+
 namespace RoutinePanel
 {
     public partial class App : Application
