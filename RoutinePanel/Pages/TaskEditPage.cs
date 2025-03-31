@@ -1,12 +1,20 @@
 namespace RoutinePanel.Pages;
 
+using System.Diagnostics;
 using RoutinePanel.Components;
 using RoutinePanel.Lib;
+using SQLite;
 
 public class TaskEditPage : ContentPage
 {
-	public TaskEditPage()
-	{
+    private UnorderedList taskList;
+
+    public TaskEditPage()
+    {
+        taskList = new UnorderedList(new Task[] {});
+        RefreshTaskList();
+        DisplayAlert("Task count", taskList.Count().ToString(), "OK");
+
         Title = "Edytuj listê zadañ";
 
         Content = new VerticalStackLayout
@@ -21,32 +29,44 @@ public class TaskEditPage : ContentPage
                     HorizontalOptions = LayoutOptions.Center,
                     BackgroundColor = Constants.ColorScheme.COLOR_1,
                     Children = {
-                        new UnorderedList(new Task[]
-                        {
-                            new Task(new DbTask 
-                            { 
-                                Title = "Zrób prace domow¹",
-                                Description = "Zadania matematyka 1,2,3/206, 1,6,8/209, 20,31,36/230"
-                            })
-                        }),
-                        new UnorderedList(new Task[]
-                        {
-                            new Task(new DbTask
-                            {
-                                Title = "Zrób prace domow¹ 2",
-                                Description = "Zadania polski 1,2,3/119"
-                            })
-                        }),
+                        taskList,
                         new AppButton
                         {
                             Text = "+",
-                            OnClick = (sender, args) => {
-                                DisplayAlert("Hello", "", "OK");
+                            OnClick = async (sender, args) => {
+                                string title = await DisplayPromptAsync("Tytu³", "Podaj tytu³ zadania", "OK", "Anuluj", null, -1, Keyboard.Text, null);
+                                if(title == null)
+                                {
+                                    return;
+                                }
+
+                                string description = await DisplayPromptAsync("Opis", "Podaj opis zadania", "OK", "Anuluj", null, -1, Keyboard.Text, null);
+                                if(description == null)
+                                {
+                                    return;
+                                }
+
+                                TaskModel taskDetails = new TaskModel
+                                {
+                                    Title = title,
+                                    Description = description
+                                };
+                                App.db.Insert(taskDetails);
+
+                                RefreshTaskList();
                             }
                         }
                     }
                 }
             }
         };
-	}
+    }
+    public void RefreshTaskList()
+    {
+        Task[] tasksRefreshed = App.db
+            .Table<TaskModel>()
+            .Select(row => new Task(row, RefreshTaskList))
+            .ToArray();
+        taskList.RefreshData(tasksRefreshed);
+    }
 }

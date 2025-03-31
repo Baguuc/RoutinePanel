@@ -17,14 +17,21 @@ namespace RoutinePanel.Components
             {
                 new ColumnDefinition()
             };
-            RowDefinitionCollection rows = new RowDefinitionCollection();
+            RefreshData(_children);
+        }
 
+        public void RefreshData(IView[] _children)
+        {
+            this.Clear();
+            RowDefinitions.Clear();
             RowSpacing = 6;
 
+            int row = 0;
             foreach (IView child in _children)
             {
-                rows.Add(new RowDefinition());
-                Children.Add(child);
+                RowDefinitions.Add(new RowDefinition());
+                this.Add(child, 0, row);
+                row++;
             }
         }
     }

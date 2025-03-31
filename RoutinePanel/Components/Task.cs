@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RoutinePanel.Lib;
+﻿using RoutinePanel.Lib;
 
 namespace RoutinePanel.Components
 {
     internal class Task : Grid
     {
-        public DbTask Details { get; set; }
+        public TaskModel Details { get; set; }
 
-        public Task(DbTask details)
+        public Task(TaskModel details, Action RefreshTaskList)
         {
             Padding = 8;
             Details = details;
@@ -22,6 +17,7 @@ namespace RoutinePanel.Components
             };
             RowDefinitions = new RowDefinitionCollection
             {
+                new RowDefinition(),
                 new RowDefinition(),
                 new RowDefinition()
             };
@@ -40,6 +36,16 @@ namespace RoutinePanel.Components
                 Text = Details.Description,
                 FontSize = 11
             }, 0, 1);
+            this.Add(new AppButton
+            {
+                Text = "Usuń",
+                FontSize = 11,
+                OnClick = (sender, args) =>
+                {
+                    App.db.Delete(Details);
+                    RefreshTaskList();
+                }
+            }, 0, 2);
         }
     }
 }
