@@ -17,6 +17,7 @@ namespace RoutinePanel
             db = new SQLiteConnection(databasePath);
             
             db.CreateTable<TaskModel>();
+            db.CreateTable<TaskCompletionModel>();
         }
 
         protected override Window CreateWindow(IActivationState? activationState)

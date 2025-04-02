@@ -10,6 +10,7 @@ public class MainPage : TabbedPage
 		BarBackgroundColor = Constants.ColorScheme.COLOR_4;
 		SelectedTabColor = Constants.ColorScheme.COLOR_1;
 
+		this.Children.Add(new TaskCompletionPage());
 		this.Children.Add(new TaskEditPage());
     }
 }

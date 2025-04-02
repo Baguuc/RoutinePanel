@@ -12,10 +12,9 @@ public class TaskEditPage : ContentPage
     public TaskEditPage()
     {
         taskList = new UnorderedList(new Task[] {});
-        RefreshTaskList();
-        DisplayAlert("Task count", taskList.Count().ToString(), "OK");
-
         Title = "Edytuj listê zadañ";
+
+        this.Loaded += (_, _) => RefreshTaskList();
 
         Content = new VerticalStackLayout
         {
