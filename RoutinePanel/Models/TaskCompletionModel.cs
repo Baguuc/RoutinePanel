@@ -1,4 +1,6 @@
-﻿namespace RoutinePanel.Lib
+﻿using RoutinePanel.State;
+
+namespace RoutinePanel.Lib
 {
     internal class TaskCompletionModel
     {
@@ -18,6 +20,8 @@
             command.Parameters.AddWithValue("$id", taskId);
 
             command.ExecuteNonQuery();
+
+            StateManagers.TaskStateManager.Update(TaskModel.SelectAll());
         }
 
         public static void Delete(int id)
@@ -27,6 +31,8 @@
             command.Parameters.AddWithValue("$id", id);
 
             command.ExecuteNonQuery();
+
+            StateManagers.TaskStateManager.Update(TaskModel.SelectAll());
         }
     }
 }

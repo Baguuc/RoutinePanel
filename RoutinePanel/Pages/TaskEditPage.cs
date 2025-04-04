@@ -1,20 +1,24 @@
 namespace RoutinePanel.Pages;
 
-using System.Diagnostics;
-using RoutinePanel.Components;
+using RoutinePanel.Components.TaskEditPage;
+using RoutinePanel.Components.Global;
 using RoutinePanel.Lib;
-using SQLite;
+using RoutinePanel.State;
 
 public class TaskEditPage : ContentPage
 {
-    private UnorderedList taskList;
+    private UnorderedList taskList = new UnorderedList(Array.Empty<TaskRepresentation>());
 
     public TaskEditPage()
     {
-        taskList = new UnorderedList(new Task[] {});
         Title = "Edytuj listê zadañ";
 
-        this.Loaded += (_, _) => RefreshTaskList();
+        this.Loaded += (_, _) =>
+        {
+            StateManagers.TaskStateManager.Observe((newData) => RefreshList(newData));
+
+            RefreshList(StateManagers.TaskStateManager.GetValue());
+        };
 
         Content = new VerticalStackLayout
         {
@@ -29,39 +33,18 @@ public class TaskEditPage : ContentPage
                     BackgroundColor = Constants.ColorScheme.COLOR_1,
                     Children = {
                         taskList,
-                        new AppButton
-                        {
-                            Text = "+",
-                            OnClick = async (sender, args) => {
-                                string title = await DisplayPromptAsync("Tytu³", "Podaj tytu³ zadania", "OK", "Anuluj", null, -1, Keyboard.Text, null);
-                                if(title == null)
-                                {
-                                    return;
-                                }
-
-                                string description = await DisplayPromptAsync("Opis", "Podaj opis zadania", "OK", "Anuluj", null, -1, Keyboard.Text, null);
-                                if(description == null)
-                                {
-                                    return;
-                                }
-
-                                TaskModel taskDetails = new TaskModel(title, description);
-                                TaskModel.Insert(taskDetails);
-
-                                RefreshTaskList();
-                            }
-                        }
+                        new TaskAdditionButton()
                     }
                 }
             }
         };
     }
-    public void RefreshTaskList()
+    public void RefreshList(List<TaskModel> newData)
     {
-        Task[] tasksRefreshed = TaskModel.SelectAll()
-            .Select(row => new Task(row, RefreshTaskList))
+        TaskRepresentation[] listItems = newData
+            .Select((task => new TaskRepresentation(task)))
             .ToArray();
 
-        taskList.RefreshData(tasksRefreshed);
+        taskList.RefreshData(listItems);
     }
 }

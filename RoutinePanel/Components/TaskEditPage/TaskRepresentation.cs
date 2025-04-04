@@ -1,12 +1,13 @@
-﻿using RoutinePanel.Lib;
+﻿using RoutinePanel.Components.Global;
+using RoutinePanel.Lib;
 
-namespace RoutinePanel.Components
+namespace RoutinePanel.Components.TaskEditPage
 {
-    internal class Task : Grid
+    internal class TaskRepresentation : Grid
     {
         public TaskModel Details { get; set; }
 
-        public Task(TaskModel details, Action RefreshTaskList)
+        public TaskRepresentation(TaskModel details)
         {
             Padding = 8;
             Details = details;
@@ -43,7 +44,6 @@ namespace RoutinePanel.Components
                 OnClick = (sender, args) =>
                 {
                     TaskModel.Delete(details.id);
-                    RefreshTaskList();
                 }
             }, 0, 2);
         }

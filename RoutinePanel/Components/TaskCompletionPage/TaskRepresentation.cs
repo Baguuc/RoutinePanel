@@ -1,12 +1,13 @@
+ï»¿using RoutinePanel.Components.Global;
 using RoutinePanel.Lib;
 
-namespace RoutinePanel.Components
+namespace RoutinePanel.Components.TaskCompletionPage
 {
-    internal class TaskCompletion : Grid
+    internal class TaskRepresentation : Grid
     {
         public TaskModel TaskDetails { get; set; }
 
-        public TaskCompletion(TaskModel taskDetails, Action RefreshTaskList)
+        public TaskRepresentation(TaskModel taskDetails)
         {
             Padding = 8;
             TaskDetails = taskDetails;
@@ -24,8 +25,8 @@ namespace RoutinePanel.Components
             RowSpacing = 4;
 
             WidthRequest = 200;
-            
-            if(taskDetails.completed)
+
+            if (taskDetails.completed)
             {
                 Label titleLabel = new AppLabel
                 {
@@ -41,18 +42,17 @@ namespace RoutinePanel.Components
                 }, 0, 1);
                 this.Add(new AppButton
                 {
-                    Text = "Oznacz jako nieukoñczone",
+                    Text = "Oznacz jako nieukoÅ„czone",
                     OnClick = (_, _) =>
                     {
                         int? completionId = TaskModel.GetCompletionId(TaskDetails);
 
-                        if(completionId == null)
+                        if (completionId == null)
                         {
                             return;
                         }
 
-                        TaskCompletionModel.Delete((int) completionId);
-                        RefreshTaskList();
+                        TaskCompletionModel.Delete((int)completionId);
                     }
                 }, 0, 2);
             }
@@ -72,11 +72,10 @@ namespace RoutinePanel.Components
                 }, 0, 1);
                 this.Add(new AppButton
                 {
-                    Text = "Oznacz jako ukoñczone",
+                    Text = "Oznacz jako ukoÅ„czone",
                     OnClick = (_, _) =>
                     {
                         TaskCompletionModel.Insert(TaskDetails.id);
-                        RefreshTaskList();
                     }
                 }, 0, 2);
             }

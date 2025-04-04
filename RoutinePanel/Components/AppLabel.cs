@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RoutinePanel.Lib;
+﻿using RoutinePanel.Lib;
 
-namespace RoutinePanel.Components
+namespace RoutinePanel.Components.Global
 {
     internal class AppLabel : Label
     {

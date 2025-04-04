@@ -1,20 +1,24 @@
 ﻿namespace RoutinePanel.Pages;
 
-using System.Diagnostics;
-using RoutinePanel.Components;
+using RoutinePanel.Components.Global;
+using RoutinePanel.Components.TaskCompletionPage;
 using RoutinePanel.Lib;
-using SQLite;
+using RoutinePanel.State;
 
 public class TaskCompletionPage : ContentPage
 {
-    private UnorderedList taskList;
+    private UnorderedList taskList = new UnorderedList(Array.Empty<TaskRepresentation>());
 
     public TaskCompletionPage()
     {
-        taskList = new UnorderedList(new Task[] { });
         Title = "Zobacz zadania";
 
-        this.Loaded += (_, _) => RefreshTaskList();
+        this.Loaded += (_, _) =>
+        {
+            StateManagers.TaskStateManager.Observe((newData) => RefreshList(newData));
+
+            RefreshList(StateManagers.TaskStateManager.GetValue());
+        };
 
         Content = new VerticalStackLayout
         {
@@ -27,17 +31,12 @@ public class TaskCompletionPage : ContentPage
         };
     }
 
-    public void RefreshTaskList()
+    private void RefreshList(List<TaskModel> newData)
     {
-        TaskModel[] tasks = TaskModel.SelectAll()
+        TaskRepresentation[] listItems = newData
+            .Select((task => new TaskRepresentation(task)))
             .ToArray();
 
-        TaskCompletion[] labels = tasks.Select(task =>
-        {
-            return new TaskCompletion(task, RefreshTaskList);
-        })
-        .ToArray();
-
-        taskList.RefreshData(labels);
+        taskList.RefreshData(listItems);
     }
 }

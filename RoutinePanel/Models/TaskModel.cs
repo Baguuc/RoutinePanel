@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Maui.Controls;
-using RoutinePanel.Components;
+﻿using RoutinePanel.State;
 
 namespace RoutinePanel.Lib
 {
@@ -47,6 +41,8 @@ namespace RoutinePanel.Lib
             command.Parameters.AddWithValue("description", task.description);
 
             command.ExecuteNonQuery();
+
+            StateManagers.TaskStateManager.Update(TaskModel.SelectAll());
         }
 
         public static void Delete(int id)
@@ -56,6 +52,8 @@ namespace RoutinePanel.Lib
             command.Parameters.AddWithValue("$id", id);
 
             command.ExecuteNonQuery();
+
+            StateManagers.TaskStateManager.Update(TaskModel.SelectAll());
         }
 
         public static List<TaskModel> SelectAll()

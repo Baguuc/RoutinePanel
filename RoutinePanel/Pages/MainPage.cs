@@ -1,5 +1,5 @@
 using RoutinePanel.Lib;
-using SQLite;
+using RoutinePanel.State;
 
 namespace RoutinePanel.Pages;
 
@@ -12,5 +12,7 @@ public class MainPage : TabbedPage
 
 		this.Children.Add(new TaskCompletionPage());
 		this.Children.Add(new TaskEditPage());
+
+        StateManagers.TaskStateManager.Update(TaskModel.SelectAll());
     }
 }
