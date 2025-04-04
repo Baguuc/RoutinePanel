@@ -5,13 +5,11 @@ namespace RoutinePanel.Components
     internal class TaskCompletion : Grid
     {
         public TaskModel TaskDetails { get; set; }
-        public bool Completed { get; set; }
 
-        public TaskCompletion(TaskModel taskDetails, bool completed, Action RefreshTaskList)
+        public TaskCompletion(TaskModel taskDetails, Action RefreshTaskList)
         {
             Padding = 8;
             TaskDetails = taskDetails;
-            Completed = completed;
 
             ColumnDefinitions = new ColumnDefinitionCollection
             {
@@ -27,18 +25,18 @@ namespace RoutinePanel.Components
 
             WidthRequest = 200;
             
-            if(Completed)
+            if(taskDetails.completed)
             {
                 Label titleLabel = new AppLabel
                 {
-                    Text = TaskDetails.Title,
+                    Text = TaskDetails.title,
                     FontSize = 15
                 };
 
                 this.Add(titleLabel, 0, 0);
                 this.Add(new AppLabel
                 {
-                    Text = TaskDetails.Description,
+                    Text = TaskDetails.description,
                     FontSize = 11
                 }, 0, 1);
                 this.Add(new AppButton
@@ -46,16 +44,14 @@ namespace RoutinePanel.Components
                     Text = "Oznacz jako nieukoñczone",
                     OnClick = (_, _) =>
                     {
-                        int completionId = App.db.Table<TaskCompletionModel>()
-                            .Where(completion => completion.TaskId == TaskDetails.Id)
-                            .First()
-                            .Id;
-                        
-                        App.db.Delete(new TaskCompletionModel
+                        int? completionId = TaskModel.GetCompletionId(TaskDetails);
+
+                        if(completionId == null)
                         {
-                            Id = completionId,
-                            TaskId = TaskDetails.Id
-                        });
+                            return;
+                        }
+
+                        TaskCompletionModel.Delete((int) completionId);
                         RefreshTaskList();
                     }
                 }, 0, 2);
@@ -64,14 +60,14 @@ namespace RoutinePanel.Components
             {
                 Label titleLabel = new AppLabel
                 {
-                    Text = TaskDetails.Title,
+                    Text = TaskDetails.title,
                     FontSize = 15
                 };
 
                 this.Add(titleLabel, 0, 0);
                 this.Add(new AppLabel
                 {
-                    Text = TaskDetails.Description,
+                    Text = TaskDetails.description,
                     FontSize = 11
                 }, 0, 1);
                 this.Add(new AppButton
@@ -79,10 +75,7 @@ namespace RoutinePanel.Components
                     Text = "Oznacz jako ukoñczone",
                     OnClick = (_, _) =>
                     {
-                        App.db.Insert(new TaskCompletionModel
-                        {
-                            TaskId = TaskDetails.Id
-                        });
+                        TaskCompletionModel.Insert(TaskDetails.id);
                         RefreshTaskList();
                     }
                 }, 0, 2);

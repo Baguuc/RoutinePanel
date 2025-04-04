@@ -29,22 +29,12 @@ public class TaskCompletionPage : ContentPage
 
     public void RefreshTaskList()
     {
-        int[] completionIds = App.db
-            .Table<TaskCompletionModel>()
-            .Select(completion => completion.TaskId)
+        TaskModel[] tasks = TaskModel.SelectAll()
             .ToArray();
-
-        TaskModel[] tasks = App.db.Table<TaskModel>()
-            .ToArray();
-
-        HashSet<int> taskIds = tasks.Select(task => task.Id)
-            .ToHashSet();
-        HashSet<int> completedTasksIds = taskIds.Where(id => completionIds.Contains(id))
-            .ToHashSet();
 
         TaskCompletion[] labels = tasks.Select(task =>
         {
-            return new TaskCompletion(task, completedTasksIds.Contains(task.Id), RefreshTaskList);
+            return new TaskCompletion(task, RefreshTaskList);
         })
         .ToArray();
 

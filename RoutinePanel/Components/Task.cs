@@ -26,14 +26,14 @@ namespace RoutinePanel.Components
             WidthRequest = 200;
             Label titleLabel = new AppLabel
             {
-                Text = Details.Title,
+                Text = Details.title,
                 FontSize = 15
             };
 
             this.Add(titleLabel, 0, 0);
             this.Add(new AppLabel
             {
-                Text = Details.Description,
+                Text = Details.description,
                 FontSize = 11
             }, 0, 1);
             this.Add(new AppButton
@@ -42,7 +42,7 @@ namespace RoutinePanel.Components
                 FontSize = 11,
                 OnClick = (sender, args) =>
                 {
-                    App.db.Delete(Details);
+                    TaskModel.Delete(details.id);
                     RefreshTaskList();
                 }
             }, 0, 2);

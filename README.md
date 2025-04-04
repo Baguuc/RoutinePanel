@@ -12,4 +12,4 @@ Po odznaczeniu każdego nawyku wykonywana jest animacja z tekstem "👍" lub "Ba
 ### Użyte technologie
 Do stworzenia aplikacji zostały użyte następujące technologie:
 - [.NET Maui](https://dotnet.microsoft.com/en-us/apps/maui)
-- [sqlite-net-pcl](https://www.nuget.org/packages/sqlite-net-pcl/1.9.172?_src=template)
+- [Microsoft.Data.Sqlite](https://www.nuget.org/packages/Microsoft.Data.Sqlite/9.0.3?_src=template)

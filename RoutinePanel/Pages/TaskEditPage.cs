@@ -45,12 +45,8 @@ public class TaskEditPage : ContentPage
                                     return;
                                 }
 
-                                TaskModel taskDetails = new TaskModel
-                                {
-                                    Title = title,
-                                    Description = description
-                                };
-                                App.db.Insert(taskDetails);
+                                TaskModel taskDetails = new TaskModel(title, description);
+                                TaskModel.Insert(taskDetails);
 
                                 RefreshTaskList();
                             }
@@ -62,10 +58,10 @@ public class TaskEditPage : ContentPage
     }
     public void RefreshTaskList()
     {
-        Task[] tasksRefreshed = App.db
-            .Table<TaskModel>()
+        Task[] tasksRefreshed = TaskModel.SelectAll()
             .Select(row => new Task(row, RefreshTaskList))
             .ToArray();
+
         taskList.RefreshData(tasksRefreshed);
     }
 }
