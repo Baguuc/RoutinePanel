@@ -8,12 +8,18 @@
         public StateManager(List<Observer<T>> observers, T defaultData)
         {
             this.observers = observers;
-            Update(defaultData);
+            value = defaultData;
         }
 
         public void Observe(Action<T> OnUpdate)
         {
             observers.Add(new Observer<T>(OnUpdate));
+        }
+
+        public void RunAndObserve(Action<T> OnUpdate)
+        {
+            OnUpdate(value);
+            Observe(OnUpdate);
         }
 
         public void Update(T newData)

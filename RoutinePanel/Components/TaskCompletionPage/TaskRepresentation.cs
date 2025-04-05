@@ -5,13 +5,8 @@ namespace RoutinePanel.Components.TaskCompletionPage
 {
     internal class TaskRepresentation : Grid
     {
-        public TaskModel TaskDetails { get; set; }
-
-        public TaskRepresentation(TaskModel taskDetails)
+        public TaskRepresentation(TaskModel task)
         {
-            Padding = 8;
-            TaskDetails = taskDetails;
-
             ColumnDefinitions = new ColumnDefinitionCollection
             {
                 new ColumnDefinition()
@@ -23,62 +18,12 @@ namespace RoutinePanel.Components.TaskCompletionPage
                 new RowDefinition()
             };
             RowSpacing = 4;
-
             WidthRequest = 200;
+            Padding = 8;
 
-            if (taskDetails.completed)
-            {
-                Label titleLabel = new AppLabel
-                {
-                    Text = TaskDetails.title,
-                    FontSize = 15
-                };
-
-                this.Add(titleLabel, 0, 0);
-                this.Add(new AppLabel
-                {
-                    Text = TaskDetails.description,
-                    FontSize = 11
-                }, 0, 1);
-                this.Add(new AppButton
-                {
-                    Text = "Oznacz jako nieukończone",
-                    OnClick = (_, _) =>
-                    {
-                        int? completionId = TaskModel.GetCompletionId(TaskDetails);
-
-                        if (completionId == null)
-                        {
-                            return;
-                        }
-
-                        TaskCompletionModel.Delete((int)completionId);
-                    }
-                }, 0, 2);
-            }
-            else
-            {
-                Label titleLabel = new AppLabel
-                {
-                    Text = TaskDetails.title,
-                    FontSize = 15
-                };
-
-                this.Add(titleLabel, 0, 0);
-                this.Add(new AppLabel
-                {
-                    Text = TaskDetails.description,
-                    FontSize = 11
-                }, 0, 1);
-                this.Add(new AppButton
-                {
-                    Text = "Oznacz jako ukończone",
-                    OnClick = (_, _) =>
-                    {
-                        TaskCompletionModel.Insert(TaskDetails.id);
-                    }
-                }, 0, 2);
-            }
+            this.Add(new TaskRepresentationTitle(task), 0, 0);
+            this.Add(new TaskRepresentationDescription(task), 0, 1);
+            this.Add(new TaskCompletionButton(task), 0, 2);
         }
     }
 }

@@ -5,13 +5,8 @@ namespace RoutinePanel.Components.TaskEditPage
 {
     internal class TaskRepresentation : Grid
     {
-        public TaskModel Details { get; set; }
-
-        public TaskRepresentation(TaskModel details)
+        public TaskRepresentation(TaskModel task)
         {
-            Padding = 8;
-            Details = details;
-
             ColumnDefinitions = new ColumnDefinitionCollection
             {
                 new ColumnDefinition()
@@ -23,29 +18,12 @@ namespace RoutinePanel.Components.TaskEditPage
                 new RowDefinition()
             };
             RowSpacing = 4;
-
             WidthRequest = 200;
-            Label titleLabel = new AppLabel
-            {
-                Text = Details.title,
-                FontSize = 15
-            };
+            Padding = 8;
 
-            this.Add(titleLabel, 0, 0);
-            this.Add(new AppLabel
-            {
-                Text = Details.description,
-                FontSize = 11
-            }, 0, 1);
-            this.Add(new AppButton
-            {
-                Text = "Usuń",
-                FontSize = 11,
-                OnClick = (sender, args) =>
-                {
-                    TaskModel.Delete(details.id);
-                }
-            }, 0, 2);
+            this.Add(new TaskRepresentationTitle(task), 0, 0);
+            this.Add(new TaskRepresentationDescription(task), 0, 1);
+            this.Add(new TaskRepresentationDeletionButton(task), 0, 2);
         }
     }
 }

@@ -7,18 +7,20 @@ using RoutinePanel.State;
 
 public class TaskCompletionPage : ContentPage
 {
-    private UnorderedList taskList = new UnorderedList(Array.Empty<TaskRepresentation>());
-
     public TaskCompletionPage()
     {
         Title = "Zobacz zadania";
+        UnorderedList taskList = new UnorderedList(Array.Empty<TaskRepresentation>());
 
         this.Loaded += (_, _) =>
-        {
-            StateManagers.TaskStateManager.Observe((newData) => RefreshList(newData));
+            StateManagers.TaskStateManager.RunAndObserve((newData) =>
+            {
+                TaskRepresentation[] listItems = newData
+                    .Select((task => new TaskRepresentation(task)))
+                    .ToArray();
 
-            RefreshList(StateManagers.TaskStateManager.GetValue());
-        };
+                taskList.RefreshItems(listItems);
+            });
 
         Content = new VerticalStackLayout
         {
@@ -29,14 +31,5 @@ public class TaskCompletionPage : ContentPage
                 taskList
             }
         };
-    }
-
-    private void RefreshList(List<TaskModel> newData)
-    {
-        TaskRepresentation[] listItems = newData
-            .Select((task => new TaskRepresentation(task)))
-            .ToArray();
-
-        taskList.RefreshData(listItems);
     }
 }

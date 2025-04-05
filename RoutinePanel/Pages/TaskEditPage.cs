@@ -7,18 +7,20 @@ using RoutinePanel.State;
 
 public class TaskEditPage : ContentPage
 {
-    private UnorderedList taskList = new UnorderedList(Array.Empty<TaskRepresentation>());
-
     public TaskEditPage()
     {
         Title = "Edytuj listê zadañ";
+        UnorderedList taskList = new UnorderedList(Array.Empty<TaskRepresentation>());
 
-        this.Loaded += (_, _) =>
-        {
-            StateManagers.TaskStateManager.Observe((newData) => RefreshList(newData));
+        this.Loaded += (_, _) => 
+            StateManagers.TaskStateManager.RunAndObserve((newData) =>
+            {
+                TaskRepresentation[] listItems = newData
+                    .Select((task => new TaskRepresentation(task)))
+                    .ToArray();
 
-            RefreshList(StateManagers.TaskStateManager.GetValue());
-        };
+                taskList.RefreshItems(listItems);
+            });
 
         Content = new VerticalStackLayout
         {
@@ -38,13 +40,5 @@ public class TaskEditPage : ContentPage
                 }
             }
         };
-    }
-    public void RefreshList(List<TaskModel> newData)
-    {
-        TaskRepresentation[] listItems = newData
-            .Select((task => new TaskRepresentation(task)))
-            .ToArray();
-
-        taskList.RefreshData(listItems);
     }
 }

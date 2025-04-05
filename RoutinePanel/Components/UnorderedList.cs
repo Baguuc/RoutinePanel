@@ -8,10 +8,10 @@
             {
                 new ColumnDefinition()
             };
-            RefreshData(_children);
+            RefreshItems(_children);
         }
 
-        public void RefreshData(IView[] _children)
+        public void RefreshItems(IView[] _children)
         {
             this.Clear();
             RowDefinitions.Clear();
