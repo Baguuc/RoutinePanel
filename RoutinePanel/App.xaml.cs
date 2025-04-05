@@ -37,7 +37,7 @@ namespace RoutinePanel
                 CREATE TABLE IF NOT EXISTS task_completions (
                     id INTEGER PRIMARY KEY,
                     task_id INTEGER NOT NULL,
-                    date_completed DATE DEFAULT CURRENT_DATE,
+                    date_completed TIME DEFAULT CURRENT_DATE,
     
                     CONSTRAINT fk_tasks FOREIGN KEY(task_id) REFERENCES tasks(id) ON DELETE CASCADE
                 );

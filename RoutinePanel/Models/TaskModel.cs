@@ -131,11 +131,21 @@ namespace RoutinePanel.Lib
             return task;
         }
 
-        public static int? GetCompletionId(TaskModel task)
+        public static int? GetCompletionId(TaskModel task, DateTime inDay)
         {
+            string yearFormatted = inDay.Year.ToString();
+            string monthFormatted = inDay.Month.ToString(); monthFormatted = monthFormatted.Length < 2
+                ? $"0{monthFormatted}"
+                : monthFormatted;
+            string dayFormatted = inDay.Day.ToString(); dayFormatted = dayFormatted.Length < 2
+                ? $"0{dayFormatted}"
+                : dayFormatted;
+            string dateFormatted = $"{yearFormatted}-{monthFormatted}-{dayFormatted}";
+
             var command = App.db.CreateCommand();
-            command.CommandText = "SELECT tc.id FROM task_completions tc WHERE task_id = $task_id;";
+            command.CommandText = $"SELECT tc.id FROM task_completions tc WHERE task_id = $task_id AND tc.date_completed = $date;";
             command.Parameters.AddWithValue("$task_id", task.id);
+            command.Parameters.AddWithValue("$date", dateFormatted);
 
             var reader = command.ExecuteReader();
 

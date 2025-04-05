@@ -19,7 +19,7 @@ namespace RoutinePanel.Components.TaskCompletionPage
                 Text = "Oznacz jako nieukończone";
                 Clicked += (_, _) =>
                 {
-                    int? completionId = TaskModel.GetCompletionId(task);
+                    int? completionId = TaskModel.GetCompletionId(task, DateTime.Now);
 
                     if (completionId == null)
                     {

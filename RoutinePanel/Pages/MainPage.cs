@@ -12,6 +12,7 @@ public class MainPage : TabbedPage
 
 		this.Children.Add(new TaskCompletionPage());
 		this.Children.Add(new TaskEditPage());
+		this.Children.Add(new AnalyticsPage());
 
         StateManagers.TaskStateManager.Update(TaskModel.SelectAll());
     }
