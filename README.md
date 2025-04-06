@@ -7,7 +7,7 @@ Aplikacja składa się z:
 - ekranu zarządzania aktualnie wykonywanymi nawykami (dodawanie/usuwanie)
 - ekranu odznaczania nawyków
 Dodatkowo aplikacja wysyła powiadomienia przypominające użytkownikowi o wykonaniu wyznaczonych sobie nawyków.
-Po odznaczeniu każdego nawyku wykonywana jest animacja z tekstem "👍" lub "Bardzo dobrze" (teksty są losowe)
+Po odznaczeniu każdego nawyku wykonywana jest animacja z tekstem "👍", "😎", "Super!" lub "Tak trzymaj!" (teksty są losowe)
 
 ### Użyte technologie
 Do stworzenia aplikacji zostały użyte następujące technologie:

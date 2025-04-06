@@ -5,7 +5,7 @@ namespace RoutinePanel.Components.TaskCompletionPage
 {
     internal class TaskRepresentation : Grid
     {
-        public TaskRepresentation(TaskModel task)
+        public TaskRepresentation(TaskModel task, Action DisplayCompletionAnimation)
         {
             ColumnDefinitions = new ColumnDefinitionCollection
             {
@@ -23,7 +23,7 @@ namespace RoutinePanel.Components.TaskCompletionPage
 
             this.Add(new TaskRepresentationTitle(task), 0, 0);
             this.Add(new TaskRepresentationDescription(task), 0, 1);
-            this.Add(new TaskCompletionButton(task), 0, 2);
+            this.Add(new TaskCompletionButton(task, DisplayCompletionAnimation), 0, 2);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace RoutinePanel.Components.TaskCompletionPage
     {
         private new EventHandler OnClick;
 
-        public TaskCompletionButton(TaskModel task)
+        public TaskCompletionButton(TaskModel task, Action DisplayCompletionAnimation)
         {
             if (task.completed)
             {
@@ -35,6 +35,7 @@ namespace RoutinePanel.Components.TaskCompletionPage
                 Clicked += (_, _) =>
                 {
                     TaskCompletionModel.Insert(task.id);
+                    DisplayCompletionAnimation();
                 };
             }
         }
